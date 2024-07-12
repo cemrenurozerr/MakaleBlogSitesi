@@ -1,0 +1,157 @@
+﻿@using Microsoft.AspNetCore.Identity
+@model MakaleVM
+@inject UserManager<Kullanici> UserManager
+@inject SignInManager<Kullanici> SignInManager
+@if (TempData["HesapSilindi"] != null)
+{
+	<div class="alert alert-danger m-0"> @TempData["HesapSilindi"]</div>
+}<style>
+	 .container {
+		 width: 80%;
+		 margin: 0 auto;
+		 padding: 20px;
+		 background-color: #fff;
+		 box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+	 }
+
+
+	 .konu {
+		 margin-bottom: 40px;
+	 }
+
+		 .konu h2 {
+			 color: #007BFF;
+			 margin-bottom: 20px;
+		 }
+
+	 .article-list {
+		 list-style: none;
+		 padding: 0;
+	 }
+
+	 .article-item {
+		 margin-bottom: 20px;
+		 padding: 15px;
+		 border: 1px solid #ddd;
+		 border-radius: 5px;
+		 background-color: #fafafa;
+	 }
+
+		 .article-item h3 {
+			 margin: 0 0 10px;
+			 font-size: 1.2em;
+			 color: #007BFF;
+		 }
+
+		 .article-item p {
+			 margin: 0;
+			 color: #555;
+		 }
+
+		 .article-item .author {
+			 font-size: 0.9em;
+			 color: #555;
+			 margin-top: 10px;
+		 }
+</style>
+<div class="container ">
+	<div class="row justify-content-center">
+		<div class="col-md-8">
+			@if (SignInManager.IsSignedIn(User))
+			{
+				if (Model.TakipEdilenKonular.Count > 0)
+				{
+					<h2>Takip Ettiğiniz Konular</h2>
+					<ul>
+						@foreach (var topic in Model.TakipEdilenKonular)
+						{
+							<li>@topic.Adi</li>
+						}
+					</ul>
+					<a class="btn btn-outline-success" asp-controller="Konu" asp-action="Index">Daha fazla konu takip etmek için tıklayın!</a>
+
+				}
+				else
+				{
+					<h3>Aşağıdaki Konuları Takip Edebilirsiniz</h3>
+					<form asp-controller="Home" asp-action="Index" method="post">
+						<div>
+							@foreach (var topic in Model.TakipEdilebilenKonu) // Model.Topics -> Tüm konular
+							{
+								<div>
+									<input type="checkbox" id="topic_@topic.Adi" name="FollowedTopics" value="@topic.KonuID">
+									<label for="topic_@topic.Adi">@topic.Adi</label>
+								</div>
+							}
+						</div>
+						<button type="submit" class="btn btn-primary">Ekle</button>
+					</form>
+				}
+
+
+			}
+			<div class="card mt-2 text-center">
+				<div class="card-body mt-2">
+					<h2>Hakkımızda</h2>
+					<p>Sitemiz Hakkında Merak Ettiğiniz Her Şey İçin Daha Fazla Bilgiye Tıklayın!.</p>
+					<a asp-action="Hakkinda" class="btn btn-primary">Daha Fazla Bilgi</a>
+				</div>
+			</div>
+			<hr />
+			<div class="row">
+				<h1 class="text-center"><i>En çok okunan makaleler </i></h1>
+				@foreach (var makale in Model.Makaleler)
+				{
+					<div class="col-md-4">
+						<div class="card mb-4 shadow-sm">
+
+							<div class="card-body">
+								<a asp-action="MakaleOku" asp-controller="Makale" asp-route-id="@makale.MakaleID">
+									<h5 class="card-title">@makale.Baslik</h5>
+								</a>
+								<p class="card-text">@makale.Icerik.Substring(0, Math.Min(100, makale.Icerik.Length)) ..</p>
+								<div class="d-flex justify-content-between align-items-center">
+									<small class="text-muted">Yazar: @makale.Kullanici.Ad @makale.Kullanici.Soyad - Okuma Süresi: @makale.OrtalamaOkumaSuresi</small>
+								</div>
+							</div>
+						</div>
+					</div>
+				}
+				<div class="card  text-center">
+					<div class="card-body">
+						<a asp-action="Index" asp-controller="Makale" class="btn btn-primary">Tüm Makaleleri Görüntüle</a>
+					</div>
+				</div>
+			</div>
+
+
+			
+				<h1 class="text-center"><i>Konu Başlıklarına Göre Makaleler</i></h1>
+
+				@foreach (var konu in Model.Konular)
+				{
+					<div class="konu">
+						<h2>@konu.Adi</h2>
+						<ul class="article-list">
+							@foreach (var makaleKonular in konu.MakaleKonular)
+							{
+								var makale = makaleKonular.Makale;
+								<li class="article-item">
+									<h3>@makale?.Baslik</h3>
+								<p>@makale.Icerik.Substring(0, Math.Min(150, makale.Icerik.Length))</p>
+									<p class="author">
+										Yazar: @makale.Kullanici?.Ad @makale.Kullanici?.Soyad
+									</p>
+								</li>
+								<div class="card  text-center">
+									<div class="card-body">
+										<a asp-action="MakaleOku" asp-controller="Makale" asp-route-id="@makale.MakaleID" class="btn btn-primary">Ayrıntılı Bilgi</a>
+									</div>
+								</div>
+							}
+						</ul>
+					</div>
+				}
+			
+		</div>
+	</div>

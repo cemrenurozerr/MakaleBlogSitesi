@@ -1,0 +1,51 @@
+﻿@model IEnumerable<BlogSitesi.Models.Konu>
+
+@{
+    if (TempData["Hata"] != null)
+    {
+        <div class="alert alert-danger m-0">@TempData["Hata"]</div>
+    };
+}
+
+
+
+@{
+    if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success m-0"> @TempData["Success"]</div>
+    };
+}
+<link href="~/css/stylesheet.css" rel="stylesheet" />
+
+<div class="container mt-3">
+    @foreach (var konu in Model)
+    {
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title"></h5>
+                <p class="card-text"><strong>Konu Adı:</strong> @konu.Adi</p>
+
+                @if (konu.MakaleKonular != null && konu.MakaleKonular.Any())
+                {
+                    <p class="card-text"><strong>Makale Başlıkları:</strong></p>
+                    <ul class="list-group list-group-flush">
+                        @foreach (var makaleKonu in konu.MakaleKonular)
+                        {
+                            <li class="list-group-item">@makaleKonu.Makale.Baslik</li>
+                        }
+                    </ul>
+                }
+                else
+                {
+                    <p class="card-text"><span>Henüz Bir Makale Yazılmadı! İlk yazan sen olmak ister misin?<a asp-action="MakaleYaz" asp-controller="Makale" class="btn btn-success">Hemen Yaz.</a></span></p>
+                }
+                <a asp-action="KonuTakip" asp-controller="Konu" asp-route-id="@konu.KonuID" class="btn btn-outline-success">Konuyu Takibe Al!</a>
+            </div>
+        </div>
+    }
+    <div class="card  text-center">
+        <div class="card-body">
+            <a asp-action="Create" asp-controller="Konu" class="btn btn-primary">Yeni Bir Konu Eklemek İster Misin?</a>
+        </div>
+    </div>
+</div>

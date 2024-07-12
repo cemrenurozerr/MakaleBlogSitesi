@@ -1,0 +1,58 @@
+﻿@model List<Makale>
+
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Blog Listesi</title>
+	<link href="~/css/stylesheet.css" rel="stylesheet" />
+</head>
+<body>
+	@if (TempData["Message"] != null)
+	{
+		<div class="alert alert-danger m-0"> @TempData["Message"]</div>
+	}
+	<div class="container">
+		<h1>Makaleler</h1>
+
+		<ul class="blog-list">
+			@foreach (var blog in Model)
+			{
+				<li class="blog-item">
+					<a asp-action="MakaleOku" asp-controller="Makale" asp-route-id="@blog.MakaleID">
+						<h2>@blog.Baslik</h2>
+					</a>
+					@* <p>@blog.Icerik</p> *@
+					<p class="categories fw-bold">
+						Kategoriler:
+						@foreach (var category in blog.MakaleKonular)
+						{
+							@category.Konu.Adi
+							@if (category != blog.MakaleKonular.Last())
+							{
+								<span>,</span>
+							}
+						}
+					</p>
+					<br />
+					<p class="fw-bold">
+						Ortalama Okuma Süresi: @blog.OrtalamaOkumaSuresi
+					</p>
+					<br />
+					<a asp-action="YazdigimMakaleler" asp-controller="Hesap" asp-route-id="@blog.KullaniciId">
+						<p class="author fw-bold">
+							Yazar: @blog.Kullanici?.Ad @blog.Kullanici.Soyad
+						</p>
+					</a>
+					<p class="fw-bold">
+						Yayınlanma Tarihi: @blog.OlusturulmaTarihi.ToString("dd-MM-yyyy")
+					</p>
+					@* <a href="@blog.Url">Devamını oku...</a> *@
+				</li>
+			}
+		</ul>
+	</div>
+
+</body>
+</html>

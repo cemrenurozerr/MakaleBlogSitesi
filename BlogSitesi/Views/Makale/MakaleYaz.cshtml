@@ -1,0 +1,60 @@
+﻿@model MakaleEkleVM
+
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blog Listesi</title>
+    <link href="~/css/stylesheet.css" rel="stylesheet" />
+    <style>
+        .checkbox-container {
+            margin-bottom: 5px;
+        }
+
+        .btn-check:checked + .btn {
+            background-color: #007bff; /* Seçildiğinde arka plan rengi */
+            color: #fff; /* Seçildiğinde metin rengi */
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 0.375rem 0.75rem;
+            font-size: 1rem;
+            font-weight: 400;
+            line-height: 1.5;
+            text-align: center;
+            white-space: nowrap;
+            vertical-align: middle;
+            user-select: none;
+            border: 1px solid transparent;
+            border-radius: 0.25rem;
+            transition: background-color 0.15s ease-in-out, color 0.15s ease-in-out;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Makale Yaz!</h1>
+        <div class="blog-form">
+            <h2>Yeni Makale Ekle</h2>
+            <form asp-controller="Makale" asp-action="MakaleYaz" method="post">
+                <input asp-for="Baslik" placeholder="Makale Başlığı" required>
+                <textarea asp-for="Icerik" rows="4" placeholder="Makale İçeriği" required></textarea>
+
+                @foreach (var konu in Model.Konular)
+                {
+                    <div class="checkbox-container">
+                        <input type="checkbox" class="btn-check" name="SelectedCategories" value="@konu.KonuID" id="btn-check-@konu.KonuID" autocomplete="off">
+                        <label class="btn" for="btn-check-@konu.KonuID">@konu.Adi</label>
+                    </div>
+                }
+                <input asp-for="OrtalamaOkumaSuresi" placeholder="Ortalama Okuma Süresi"/>
+                <button type="submit">Ekle</button>
+            </form>
+        </div>
+    </div>
+
+</body>
+</html>

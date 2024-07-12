@@ -1,0 +1,12 @@
+﻿@model BlogSitesi.Models.Kullanici
+
+@{
+    ViewData["Title"] = "Delete";
+}
+
+<h3>Hesabını Silmek İstediğine Emin Misin?</h3>
+    <form asp-action="Delete" method="post">
+        <input type="hidden" asp-for="Id" />
+        <input type="submit" value="Hesabımı Sil" class="btn btn-danger" /> |
+        <a asp-action="Hesap" class="btn btn-warning">Vazgeç</a>
+    </form>

@@ -1,0 +1,73 @@
+﻿@model Kullanici
+
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Blog Listesi</title>
+	<link href="~/css/stylesheet.css" rel="stylesheet" />
+    <style>
+        .articles {
+            margin-top: 40px;
+        }
+
+        .article-item {
+            margin-bottom: 40px;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background-color: #fafafa;
+        }
+
+            .article-item h2 {
+                margin: 0 0 10px;
+                font-size: 1.8em;
+                color: #ff9f1a;
+            }
+
+            .article-item p {
+                margin: 10px 0;
+                color: #555;
+                font-size: 1.2em;
+            }
+
+            .article-item .date {
+                font-size: 1em;
+                color: #888;
+                margin-top: 15px;
+            }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>@Model.Ad @Model.Soyad Yazdığı Makaleler</h1>
+        
+        <ul class="blog-list">
+            <div class="articles">
+                <h2>Yazdığı Makaleler</h2>
+                @foreach (var blog in Model.Makaleler.OrderByDescending(a => a.OlusturulmaTarihi))
+                {
+                    <div class="article-item">
+                       <a asp-action="MakaleOku" asp-controller="Makale" asp-route-id="@blog.MakaleID">
+                        <h2>@blog.Baslik</h2>
+                        </a>
+                        <p class="fw-bold">
+                            Ortalama Okuma Süresi: @blog.OrtalamaOkumaSuresi
+                        </p>
+                        <br />
+                        <p class="author fw-bold">
+                            Yazar: @blog.Kullanici?.Ad @blog.Kullanici.Soyad
+                        </p>
+                        <p class="fw-bold">
+                            Yayınlanma Tarihi: @blog.OlusturulmaTarihi.ToString("dd-MM-yyyy")
+                        </p>
+                    </div>
+                }
+            </div>
+        </ul>
+    </div>
+    <a asp-action="Index" asp-controller="Makale" class="btn btn-success">Makalelere Geri Dön</a>
+</body>
+</html>

@@ -1,0 +1,54 @@
+﻿@model Makale
+
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blog Listesi</title>
+    <link href="~/css/stylesheet.css" rel="stylesheet" />
+</head>
+<body>
+
+    <div class="container">
+        <h1>@Model.Baslik</h1>
+        <ul class="blog-list">
+                <li class="blog-item">
+                <p>@Model.Icerik</p>
+                <p class="categories fw-bold">
+                        Kategoriler:
+                    @foreach (var category in Model.MakaleKonular)
+                        {
+                            @category.Konu.Adi
+                        @if (category != Model.MakaleKonular.Last())
+                            {
+                                <span>,</span>
+                            }
+                        }
+                    </p>
+                    <br />
+                    <p class="fw-bold">
+                    Ortalama Okuma Süresi: @Model.OrtalamaOkumaSuresi
+                    </p>
+                    <br />
+                    <a asp-action="YazdigimMakaleler" asp-controller="Hesap" asp-route-id="MakaleID">
+                    <p class="author fw-bold">
+                    Yazar: @Model.Kullanici?.Ad @Model.Kullanici.Soyad
+                    </p>
+                    </a>
+                    <p class="fw-bold">
+                    Yayınlanma Tarihi: @Model.OlusturulmaTarihi.ToString("dd-MM-yyyy")
+                    </p>
+                    @* <a href="@blog.Url">Devamını oku...</a> *@
+                </li>
+            
+        </ul>
+    </div>
+    <br />
+    <br />
+    
+        <a asp-action="Index" class="btn btn-success">Makalelere Geri Dön</a>
+        <a asp-action="Index" asp-controller="Home" class="btn btn-success">Anasayfaya Geri Dön</a>
+    
+</body>
+</html>

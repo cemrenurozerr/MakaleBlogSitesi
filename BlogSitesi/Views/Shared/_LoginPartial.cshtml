@@ -1,0 +1,51 @@
+﻿@using Microsoft.AspNetCore.Identity
+@inject UserManager<Kullanici> UserManager
+@inject SignInManager<Kullanici> SignInManager
+
+
+
+
+	@if (User.IsInRole("Uye"))
+	{
+		<li class="nav-item">
+		<a class="nav-link fw-bold" asp-controller="Home" asp-action="Index">Anasayfa</a>
+		</li>
+		<li class="nav-item">
+		<a class="nav-link  fw-bold" asp-controller="Home" asp-action="Hakkinda">Hakkımızda</a>
+		</li>
+		<li class="nav-item">
+		<a class="nav-link fw-bold" asp-controller="Makale" asp-action="Index">Makaleler</a>
+		</li>
+		<li class="nav-item">
+		<a class="nav-link fw-bold" asp-controller="Makale" asp-action="MakaleYaz">Makale Yaz</a>
+		</li>
+		<li class="nav-item">
+		<a class="nav-link fw-bold" asp-controller="Konu" asp-action="Index">Konular</a>
+		</li>
+		<li class="nav-item">
+		<a class="nav-link fw-bold" asp-controller="Hesap" asp-action="Hesap">Hesabım</a>
+		</li>
+		<div class="ml-auto" style="padding-left:700px">
+		<a asp-controller="Login" asp-action="LogOut" class="btn btn-light">Çıkış</a>
+		</div>
+		
+	}
+	else
+	{
+		<li class="nav-item">
+		<a class="nav-link fw-bold" asp-controller="Home" asp-action="Index">Anasayfa</a>
+		</li>
+		<li class="nav-item">
+		<a class="nav-link fw-bold" asp-controller="Home" asp-action="Hakkinda">Hakkımızda</a>
+		</li>
+		<li class="nav-item">
+		<a class="nav-link fw-bold" asp-controller="Makale" asp-action="Index">Makaleler</a>
+		</li>
+	<div class="ml-auto" style="padding-left:850px">
+		<a asp-controller="Login" asp-action="Login" class="btn btn-light">Giriş Yap</a>
+		<a asp-controller="Login" asp-action="Register" class="btn btn-light">Kaydol</a>
+	</div>
+	}
+
+
+
